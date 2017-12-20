@@ -3,6 +3,9 @@ from collections import defaultdict
 from datetime import datetime
 import codecs, glob, os, re, sys
 
+encDict = {'ansi': 'ascii', 'unicode': 'utf-16-le'}
+encoding=""
+
 # Get file loaction
 def getFileLoc():
     return os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
@@ -327,15 +330,16 @@ def checkExisting(fileName):
 # Create a new file
 def writeDictToFile(regPack, fileName, redoUndo, header):
     safeFileName = checkExisting(fileName) + '.reg'
-    newFile = open(safeFileName, 'w')
+    useEnc = encDict[encoding.lower()]
+    with codecs.open(safeFileName, 'w', useEnc) as newFile:
 
-    print(header + '\n', file = newFile)
+        print(header + '\n', file = newFile)
 
-    for regKey in regPack[redoUndo]:
-        print(regKey, file = newFile)
-        for regValue in regPack[redoUndo][regKey]:
-            print(regValue, file = newFile)
-    newFile.close()
+        for regKey in regPack[redoUndo]:
+            print(regKey, file = newFile)
+            for regValue in regPack[redoUndo][regKey]:
+                print(regValue, file = newFile)
+        #newFile.close()
 
     return safeFileName
 
@@ -394,8 +398,8 @@ def parseLines(regPack, setMode, cleanLine, sectionCounter):
 # Now open the entire file with correct encoding
 def openFileBy(targetFile, encoding, debugOption):
     # Choose encoding
-    encDict = {'ansi': 'ascii', 'unicode': 'utf-16-le'}
     useEnc = encDict[encoding.lower()]
+    print("UseEnc : "+useEnc)
 
     try:
         with codecs.open(targetFile, 'r', useEnc) as openFile:
@@ -463,6 +467,7 @@ def debugSpec():
 
 # Check to make sure this is a valid file and if so get the type (ANSI / Unicode)
 def checkFile():
+    global encoding
     targetFile = getFullPath()
     searchPattern = re.compile('regshot.*(unicode|ansi)', re.IGNORECASE)
     debugOption = '' if not debugSpec() else sys.argv[2]
