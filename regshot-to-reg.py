@@ -334,7 +334,7 @@ def writeDictToFile(regPack, fileName, redoUndo, header):
     for regKey in regPack[redoUndo]:
         print(regKey, file = newFile)
         for regValue in regPack[redoUndo][regKey]:
-            print(regValue, file = newFile)
+            print(u'regValue', file = newFile)
     newFile.close()
 
     return safeFileName
@@ -441,7 +441,7 @@ def openFileBy(targetFile, encoding, debugOption):
 
                 # Writing to two new files (redo and undo)
                 writeRedoUndo(regPack)
-    except Exception, e:
+    except Exception as e:
         if debugOption:
             doDebug(e, debugOption)
         else:
@@ -492,7 +492,7 @@ def checkFile():
                     )
                     break
 
-    except Exception, e:
+    except Exception as e:
         if debugOption:
             doDebug(e, debugOption)
         else:
