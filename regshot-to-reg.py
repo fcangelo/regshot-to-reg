@@ -334,7 +334,7 @@ def writeDictToFile(regPack, fileName, redoUndo, header):
     for regKey in regPack[redoUndo]:
         print(regKey, file = newFile)
         for regValue in regPack[redoUndo][regKey]:
-            print(u'regValue', file = newFile)
+            print(regValue, file = newFile)
     newFile.close()
 
     return safeFileName
