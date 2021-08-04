@@ -441,7 +441,7 @@ def openFileBy(targetFile, encoding, debugOption):
 
                 # Writing to two new files (redo and undo)
                 writeRedoUndo(regPack)
-    except Exception, e:
+    except Exception as e:
         if debugOption:
             doDebug(e, debugOption)
         else:
@@ -492,7 +492,7 @@ def checkFile():
                     )
                     break
 
-    except Exception, e:
+    except Exception as e:
         if debugOption:
             doDebug(e, debugOption)
         else:
